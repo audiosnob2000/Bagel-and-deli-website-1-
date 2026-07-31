@@ -225,6 +225,54 @@ a:focus-visible, button:focus-visible {
 .menu-row p { color: var(--ink-soft); font-size: 0.92rem; }
 .menu-price { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--gold-deep); white-space: nowrap; }
 
+/* Gallery */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+.gallery-tile {
+  aspect-ratio: 4 / 3;
+  border: 2px dashed var(--rule);
+  border-radius: var(--radius);
+  background: var(--paper);
+  color: var(--ink-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* Reviews */
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 28px;
+}
+.review-card {
+  background: var(--paper);
+  border: 1px solid var(--paper-dim);
+  border-radius: var(--radius);
+  padding: 32px;
+}
+.review-stars { color: var(--gold-deep); letter-spacing: 3px; margin-bottom: 16px; font-size: 0.9rem; }
+.review-quote {
+  font-family: 'Source Serif 4', serif;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin-bottom: 18px;
+}
+.review-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gold-deep);
+}
+
 /* About / pull-quote */
 .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
 .about-copy p { color: var(--ink-soft); margin-bottom: 1.2em; max-width: 52ch; }
