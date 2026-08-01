@@ -89,13 +89,14 @@ a:focus-visible, button:focus-visible {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 88px;
+  min-height: 88px;
   padding-inline: 32px;
+  gap: 16px;
 }
 .brand {
   font-family: 'Source Serif 4', serif;
   font-weight: 600;
-  font-size: 1.3rem;
+  font-size: clamp(1.15rem, 4vw, 1.7rem);
   text-decoration: none;
   color: var(--ink);
 }
@@ -225,6 +226,29 @@ a:focus-visible, button:focus-visible {
 .menu-row p { color: var(--ink-soft); font-size: 0.92rem; }
 .menu-price { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--gold-deep); white-space: nowrap; }
 
+.menu-subhead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin: 48px 0 4px;
+}
+.menu-subhead h3 { font-size: 1.4rem; }
+.menu-subprice {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--gold-deep);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.menu-num {
+  font-variant-numeric: tabular-nums;
+  color: var(--gold-deep);
+  font-weight: 700;
+  margin-right: 4px;
+}
+
 /* Gallery */
 .gallery-grid {
   display: grid;
@@ -244,6 +268,17 @@ a:focus-visible, button:focus-visible {
   font-size: 0.85rem;
   font-weight: 600;
   letter-spacing: 0.02em;
+  overflow: hidden;
+}
+.gallery-tile--photo {
+  border: none;
+  padding: 0;
+}
+.gallery-tile--photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 /* Reviews */
