@@ -94,11 +94,19 @@ a:focus-visible, button:focus-visible {
   gap: 16px;
 }
 .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-family: 'Source Serif 4', serif;
   font-weight: 600;
   font-size: clamp(1.15rem, 4vw, 1.7rem);
   text-decoration: none;
   color: var(--ink);
+}
+.brand-icon {
+  height: 40px;
+  width: auto;
+  flex-shrink: 0;
 }
 .primary-nav { display: flex; gap: 34px; }
 .primary-nav a {
