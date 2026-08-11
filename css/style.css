@@ -221,6 +221,41 @@ a:focus-visible, button:focus-visible {
 .section-title { font-size: clamp(2rem, 3.6vw, 2.8rem); }
 
 /* Menu, editorial list */
+.menu-jumpnav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 16px 20px;
+  background: var(--paper);
+  border: 1px solid var(--paper-dim);
+  border-radius: 10px;
+  margin-bottom: 44px;
+  position: sticky;
+  top: 89px;
+  z-index: 5;
+}
+.menu-jumpnav a {
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--rule);
+  white-space: nowrap;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.menu-jumpnav a:hover { border-color: var(--gold-deep); color: var(--gold-deep); }
+
+.menu-section { scroll-margin-top: 160px; }
+.menu-section + .menu-section {
+  margin-top: 48px;
+  padding-top: 48px;
+  border-top: 1px solid var(--paper-dim);
+}
+.menu-sub-note { color: var(--ink-soft); font-size: 0.85rem; margin: -22px 0 28px; }
+
 .menu-list { border-top: 1px solid var(--paper-dim); }
 .menu-row {
   display: grid;
@@ -274,14 +309,23 @@ a:focus-visible, button:focus-visible {
 }
 .menu-hero-text h4 {
   font-family: 'Source Serif 4', serif;
-  font-size: 1.02rem;
+  font-size: 1.2rem;
   font-weight: 600;
   margin-bottom: 3px;
 }
 .menu-hero-text p {
   color: var(--ink-soft);
-  font-size: 0.85rem;
+  font-size: 0.98rem;
   line-height: 1.5;
+}
+.menu-hero-price {
+  display: block;
+  margin-top: 5px;
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--gold-deep);
+  font-variant-numeric: tabular-nums;
 }
 
 /* Gallery */
@@ -517,4 +561,12 @@ a:focus-visible, button:focus-visible {
   .masthead-inner { padding-inline: 20px; }
   .wrap { padding-inline: 20px; }
   .section { padding: 64px 0; }
+  .menu-jumpnav {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .menu-jumpnav::-webkit-scrollbar { display: none; }
+  .menu-jumpnav a { flex-shrink: 0; }
 }
