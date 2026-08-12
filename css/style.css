@@ -413,8 +413,8 @@ a:focus-visible, button:focus-visible {
 /* Reviews */
 .reviews-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 28px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
 }
 .review-card {
   background: var(--paper);
@@ -521,6 +521,7 @@ a:focus-visible, button:focus-visible {
   .hero-image { order: -1; }
   .hero-image::before { display: none; }
   .menu-heroes-grid { grid-template-columns: 1fr; }
+  .reviews-grid { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 640px) {
@@ -553,5 +554,6 @@ a:focus-visible, button:focus-visible {
     scrollbar-width: none;
   }
   .menu-jumpnav::-webkit-scrollbar { display: none; }
+  .reviews-grid { grid-template-columns: 1fr; }
   .menu-jumpnav a { flex-shrink: 0; }
 }
