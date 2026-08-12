@@ -254,7 +254,7 @@ a:focus-visible, button:focus-visible {
   padding-top: 48px;
   border-top: 1px solid var(--paper-dim);
 }
-.menu-sub-note { color: var(--ink-soft); font-size: 0.85rem; margin: -22px 0 28px; }
+.menu-sub-note { color: var(--ink-soft); font-size: 0.85rem; margin: 0 0 28px; }
 
 .menu-subhead {
   display: flex;
@@ -262,7 +262,7 @@ a:focus-visible, button:focus-visible {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 8px 20px;
-  margin: 48px 0 4px;
+  margin: 48px 0 14px;
 }
 .menu-subhead h3 { font-size: clamp(1.7rem, 3vw, 2.1rem); font-weight: 700; }
 .menu-subprice {
