@@ -1,434 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
 <title>Miller Place Bagels &amp; Deli</title>
-<meta name="description" content="Miller Place Bagels & Deli — fresh-boiled bagels, Boar's Head deli, and a griddle that doesn't stop. Open 5 AM daily on Route 25A, Miller Place, NY.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Miller Place Bagels &amp; Deli — fresh-boiled bagels, Boar's Head deli, and a griddle that doesn't stop. Open 5 AM daily on Route 25A, Miller Place, NY.">
 <link rel="icon" href="images/logo-icon.png">
-<link rel="stylesheet" href="css/style.css">
+<script>
+/* Enable animation only once we know scripting works, and arm a dead-man's
+   switch: if the main script has not booted in 2.5s (slow link, blocked JS,
+   an error), drop back to the fully-visible static page. */
+(function(){
+  var d = document.documentElement;
+  d.className += " js-anim";
+  setTimeout(function(){
+    if (!d.hasAttribute("data-ready")) d.className = d.className.replace(" js-anim", "");
+  }, 2500);
+})();
+</script>
 </head>
 <body>
+<link rel="stylesheet" href="css/style.css">
 
-<a class="skip-link" href="#main">Skip to content</a>
 
-<header class="masthead">
-  <div class="wrap masthead-inner">
+<div class="prog" aria-hidden="true"><i id="prog"></i></div>
+
+<header class="mast" id="mast">
+  <div class="mast-in">
     <a class="brand" href="#top">
-      <img class="brand-icon" src="images/logo-icon.png" alt="" width="271" height="300">
-      Miller Place Bagels &amp; Deli
+      <img src="images/logo-icon.png" alt="" width="271" height="300">
+      <b>Miller Place Bagels &amp; Deli</b>
     </a>
-
-    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="primaryNav">
-      <span></span><span></span><span></span>
-      <span class="sr-only">Menu</span>
-    </button>
-
-    <nav class="primary-nav" id="primaryNav">
-      <a href="#menu">Menu</a>
-      <a href="#gallery">Gallery</a>
-      <a href="#reviews">Reviews</a>
-      <a href="#about">About</a>
-      <a href="#visit">Visit</a>
+    <nav class="mast-nav" id="nav">
+      <a href="#menu">Menu</a><a href="#gallery">Gallery</a><a href="#reviews">Reviews</a>
+      <a href="#about">About</a><a href="#visit">Visit</a>
     </nav>
+    <button class="icon-btn" id="theme" aria-label="Switch theme"></button>
+    <button class="icon-btn burger" id="burger" aria-label="Menu" aria-expanded="false">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
   </div>
 </header>
 
-<main id="main">
-
-  <section class="hero" id="top">
+<main id="top">
+  <section class="hero" id="hero">
     <div class="hero-grid">
-      <div class="hero-copy">
-        <span class="label hero-cap reveal">5:00 AM &middot; Route 25A, Miller Place</span>
-        <h1 class="reveal">The first hour of the day belongs to the counter.</h1>
-        <div class="hero-rule reveal"></div>
-        <p class="hero-dek reveal">
-          Before the rest of Miller Place is awake, the ovens are already
-          running. Fresh-boiled bagels, Boar&rsquo;s Head deli, and a griddle
-          that doesn&rsquo;t stop &mdash; every morning, seven days a week.
-        </p>
-        <div class="hero-actions reveal">
-          <a class="btn btn-primary" href="#menu">The Menu</a>
-          <a class="btn btn-ghost" href="#visit">Directions</a>
+      <div class="hero-copy" id="heroCopy">
+        <span class="status rv" id="status"><span class="dot"></span><span id="statusText">Open 5 AM daily</span></span>
+        <h1 id="h1">The first hour of the day belongs to the <em>counter.</em></h1>
+        <div class="hero-rule"></div>
+        <p class="hero-lede rv">Before the rest of Miller Place is awake, the ovens are already running. Fresh-boiled bagels, Boar's Head deli, and a griddle that doesn't stop — every morning, seven days a week.</p>
+        <div class="hero-cta rv">
+          <a class="btn btn-gold" href="#menu">See the Menu
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&amp;query=159+Route+25A+Miller+Place+NY+11764" target="_blank" rel="noopener">Get Directions</a>
         </div>
       </div>
-      <div class="hero-image">
-        <img src="images/storefront.jpg" alt="Miller Place Bagels &amp; Deli storefront on Route 25A" width="1122" height="1402">
-        <span class="hero-caption">159 Route 25A &middot; Miller Place, NY</span>
+      <div class="hero-shot" id="shot">
+        <div class="shot-inner" id="shotInner">
+          <img src="images/storefront.jpg" alt="The Miller Place Bagels &amp; Deli storefront on Route 25A" width="1122" height="1402" fetchpriority="high">
+        </div>
+        
       </div>
     </div>
   </section>
+
+  <div class="ticker" aria-hidden="true"><div class="tick-track"><span>Everything</span><span>Sesame</span><span>Poppy</span><span>Plain</span><span>Salt</span><span>Onion</span><span>Garlic</span><span>Cinnamon Raisin</span><span>Pumpernickel</span><span>Rye</span><span>Whole Wheat</span><span>Egg</span><span>Sunflower</span><span>French Toast</span><span>Bacon &amp; Egg</span><span>Pump Raisin</span><span>Whole Wheat Everything</span><span>Minis</span><span>Everything</span><span>Sesame</span><span>Poppy</span><span>Plain</span><span>Salt</span><span>Onion</span><span>Garlic</span><span>Cinnamon Raisin</span><span>Pumpernickel</span><span>Rye</span><span>Whole Wheat</span><span>Egg</span><span>Sunflower</span><span>French Toast</span><span>Bacon &amp; Egg</span><span>Pump Raisin</span><span>Whole Wheat Everything</span><span>Minis</span></div></div>
 
   <section class="section" id="menu">
     <div class="wrap">
-      <nav class="menu-jumpnav reveal" aria-label="Jump to menu section">
-        <a href="#menu-morning">Good Morning</a>
-        <a href="#menu-grill">From the Grill</a>
-        <a href="#menu-omelettes">Omelettes</a>
-        <a href="#menu-heroes">Specialty Heroes</a>
-        <a href="#menu-wraps">Wrap It Up</a>
-        <a href="#menu-paninis">Paninis</a>
-      </nav>
-
-      <div class="menu-section" id="menu-morning">
-        <div class="menu-subhead reveal"><h3>Good Morning</h3></div>
-        <div class="menu-heroes-grid">
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">1</span>
-            <div class="menu-hero-text"><h4>Buttered Bagel w/ Coffee</h4>
-              <span class="menu-hero-price">Cash &mdash; Sm $4.75 &middot; Med $5.00 &middot; Lg $5.25</span>
-              <span class="menu-hero-price">Credit &mdash; Sm $4.94 &middot; Med $5.20 &middot; Lg $5.46</span>
-            </div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">2</span>
-            <div class="menu-hero-text"><h4>Buttered Bagel</h4><span class="menu-hero-price">Cash $3.35 &middot; Credit $3.49</span></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">3</span>
-            <div class="menu-hero-text"><h4>Cream Cheese on a Bagel</h4><span class="menu-hero-price">Cash $3.85 &middot; Credit $3.99</span></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">4</span>
-            <div class="menu-hero-text"><h4>Flavored Cream Cheese</h4><span class="menu-hero-price">Cash $4.85 &middot; Credit $5.04</span></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">5</span>
-            <div class="menu-hero-text"><h4>Cream &amp; Nova Lox</h4><span class="menu-hero-price">Cash $11.75 &middot; Credit $12.22</span></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">6</span>
-            <div class="menu-hero-text"><h4>Muffins, Cakes, Lg. Cookie</h4><span class="menu-hero-price">Cash $3.50 &middot; Credit $3.64</span></div>
-          </div>
-        </div>
+      <div class="menunav-wrap">
+        <nav class="menunav" id="menunav" aria-label="Menu sections"><span class="slider" id="slider"></span><button type="button" data-target="c-morning">Good Morning</button><button type="button" data-target="c-grill">From the Grill</button><button type="button" data-target="c-omelettes">Omelettes</button><button type="button" data-target="c-heroes">Specialty Heroes</button><button type="button" data-target="c-wraps">Wrap It Up</button><button type="button" data-target="c-paninis">Paninis</button></nav><div class="menu-filter-bar" id="menuFilterBar"><span id="menuFilterLabel"></span><button type="button" id="menuShowAll">Show all categories</button></div>
       </div>
-
-      <div class="menu-section" id="menu-grill">
-        <div class="menu-subhead reveal"><h3>From the Grill</h3></div>
-        <p class="menu-sub-note reveal">*Egg whites add 50&cent;.</p>
-        <div class="menu-heroes-grid">
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">7</span>
-            <div class="menu-hero-text"><h4>Two Eggs on a Bagel*</h4><span class="menu-hero-price">Cash $6.35 &middot; Credit $6.60</span></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">8</span>
-            <div class="menu-hero-text"><h4>Two Eggs with Cheese*</h4><span class="menu-hero-price">Cash $7.35 &middot; Credit $7.64</span></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">9</span>
-            <div class="menu-hero-text"><h4>Two Eggs with Meat and Cheese*</h4><span class="menu-hero-price">Cash $7.85 &middot; Credit $8.15</span></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">10</span>
-            <div class="menu-hero-text"><h4>Hungry Man Hero*</h4><p>3 eggs, ham, bacon, sausage &amp; cheese.</p><span class="menu-hero-price">Cash $10.25 &middot; Credit $10.55</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="menu-section" id="menu-omelettes">
-        <div class="menu-subhead reveal">
-          <h3>Three Egg Omelettes</h3>
-          <span class="menu-subprice">$9.35 Cash &middot; $9.71 Credit</span>
-        </div>
-        <p class="menu-sub-note reveal">Served with a bagel. Egg whites add $1.00.</p>
-        <div class="menu-heroes-grid">
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">13</span>
-            <div class="menu-hero-text"><h4>Cheese or Meat</h4></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">14</span>
-            <div class="menu-hero-text"><h4>Leo</h4><p>Nova lox &amp; onion.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">15</span>
-            <div class="menu-hero-text"><h4>Western</h4><p>Ham, peppers, onions &amp; cheese.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">16</span>
-            <div class="menu-hero-text"><h4>Greek</h4><p>Peppers, tomatoes, spinach &amp; feta cheese.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">17</span>
-            <div class="menu-hero-text"><h4>Garden</h4><p>Broccoli, peppers, mushrooms &amp; spinach.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">18</span>
-            <div class="menu-hero-text"><h4>Spanish</h4><p>Peppers, onions, tomatoes, jalape&ntilde;os &amp; pepper jack cheese.</p></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="menu-section" id="menu-heroes">
-        <div class="menu-subhead reveal">
-          <h3>Specialty Heroes</h3>
-          <span class="menu-subprice">$11.99 &middot; $12.47 with credit card</span>
-        </div>
-        <div class="menu-heroes-grid">
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">25</span>
-            <div class="menu-hero-text"><h4>Big Joe</h4><p>Roast beef, melted mozzarella, bacon on garlic bread.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">26</span>
-            <div class="menu-hero-text"><h4>Fat Tony</h4><p>Chicken cutlet, bacon, melted American cheese with ranch.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">27</span>
-            <div class="menu-hero-text"><h4>Turkey Club</h4><p>Sliced turkey, bacon, cheese, lettuce &amp; tomato.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">28</span>
-            <div class="menu-hero-text"><h4>God Father</h4><p>Ham cappicola, salami, pepperoni, provolone, lettuce, tomato &amp; onion.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">29</span>
-            <div class="menu-hero-text"><h4>Daily Double</h4><p>Chicken cutlet, ham, melted Swiss cheese with ranch.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">30</span>
-            <div class="menu-hero-text"><h4>BLT</h4><p>Crispy bacon, romaine lettuce &amp; tomatoes.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">31</span>
-            <div class="menu-hero-text"><h4>Chicken Deluxe</h4><p>Chicken salad, bacon, lettuce &amp; tomato.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">32</span>
-            <div class="menu-hero-text"><h4>The Bobby Boy</h4><p>Grilled chicken, melted pepper jack cheese, lettuce, tomato &amp; onion, pepperoncinis, mayo &amp; Italian dressing.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">33</span>
-            <div class="menu-hero-text"><h4>American</h4><p>Roast beef, ham, turkey, American cheese, lettuce, tomato &amp; mayo.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">34</span>
-            <div class="menu-hero-text"><h4>Buffalo Bill</h4><p>Buffalo chicken, mozzarella, lettuce, tomato, jalape&ntilde;os &amp; ranch.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">35</span>
-            <div class="menu-hero-text"><h4>Hot Pastrami</h4><p>Pastrami, Swiss cheese, cole slaw, pickles &amp; spicy mustard.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">36</span>
-            <div class="menu-hero-text"><h4>Arlo&rsquo;s Way</h4><p>Chicken cutlet, bacon, mozzarella, cole slaw &amp; Russian dressing on a garlic hero.</p></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="menu-section" id="menu-wraps">
-        <div class="menu-subhead reveal">
-          <h3>Wrap It Up</h3>
-          <span class="menu-subprice">$9.99 Cash &middot; $10.49 Credit</span>
-        </div>
-        <p class="menu-sub-note reveal">Or create your own. All wraps served on plain or whole wheat.</p>
-        <div class="menu-heroes-grid">
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">38</span>
-            <div class="menu-hero-text"><h4>Chicken Caesar</h4><p>Grilled chicken, Parmesan &amp; romaine lettuce.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">39</span>
-            <div class="menu-hero-text"><h4>Marianne&rsquo;s</h4><p>Smoked turkey, brie, dried cranberries, romaine lettuce &amp; honey mustard.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">40</span>
-            <div class="menu-hero-text"><h4>Chicken Salad</h4><p>Chicken salad, tomatoes, bacon &amp; red onions.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">41</span>
-            <div class="menu-hero-text"><h4>Buffalo Chicken</h4><p>Buffalo chicken, lettuce &amp; blue cheese.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">42</span>
-            <div class="menu-hero-text"><h4>Rt. 25A</h4><p>Balsamic chicken, fresh mozzarella &amp; roasted red peppers.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">43</span>
-            <div class="menu-hero-text"><h4>Veggie Wrap</h4><p>Grilled vegetable, fresh mozzarella &amp; pesto.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">44</span>
-            <div class="menu-hero-text"><h4>Miller Place</h4><p>Chicken cutlet, Munster cheese, bacon, lettuce &amp; 1000 Island dressing.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">45</span>
-            <div class="menu-hero-text"><h4>Chipotle Chicken</h4><p>Chipotle chicken, melted cheddar, lettuce, onions &amp; jalape&ntilde;os.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">46</span>
-            <div class="menu-hero-text"><h4>Pesto Wrap</h4><p>Grilled chicken, roasted red peppers, sun-dried tomatoes, romaine lettuce &amp; pesto.</p></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="menu-section" id="menu-paninis">
-        <div class="menu-subhead reveal">
-          <h3>Paninis</h3>
-          <span class="menu-subprice">$9.99 Cash &middot; $10.39 Credit</span>
-        </div>
-        <div class="menu-heroes-grid">
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">47</span>
-            <div class="menu-hero-text"><h4>Tuscany</h4><p>Chicken breast, roasted red peppers, provolone &amp; balsamic.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">48</span>
-            <div class="menu-hero-text"><h4>Smokehouse</h4><p>Smoked turkey, bacon, cheddar cheese &amp; BBQ sauce.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">49</span>
-            <div class="menu-hero-text"><h4>Mexican</h4><p>Turkey, jack cheese, jalape&ntilde;os, tomatoes &amp; pesto.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">50</span>
-            <div class="menu-hero-text"><h4>Reuben</h4><p>Pastrami, cole slaw, sauerkraut, melted Swiss cheese &amp; 1000 Island.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">51</span>
-            <div class="menu-hero-text"><h4>Mt. Sinai</h4><p>Breaded eggplant, roasted red peppers &amp; fresh mozzarella.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">52</span>
-            <div class="menu-hero-text"><h4>Naples</h4><p>Grilled veggies, fresh mozzarella &amp; pesto mayo.</p></div>
-          </div>
-          <div class="menu-hero-row reveal">
-            <span class="menu-hero-badge">53</span>
-            <div class="menu-hero-text"><h4>Italiano</h4><p>Grilled chicken, roasted red pepper &amp; fresh mozzarella.</p></div>
-          </div>
-        </div>
-      </div>
+      <section class="course" id="c-morning"><div class="course-head rv"><h3>Good Morning</h3></div><div class="items"><div class="item rv"><span class="item-no">1</span><div><h4>Buttered Bagel w/ Coffee</h4><span class="price">Cash — Sm $4.75 · Med $5.00 · Lg $5.25</span><span class="price">Credit — Sm $4.94 · Med $5.20 · Lg $5.46</span></div></div><div class="item rv"><span class="item-no">2</span><div><h4>Buttered Bagel</h4><span class="price">Cash $3.35 · Credit $3.49</span></div></div><div class="item rv"><span class="item-no">3</span><div><h4>Cream Cheese on a Bagel</h4><span class="price">Cash $3.85 · Credit $3.99</span></div></div><div class="item rv"><span class="item-no">4</span><div><h4>Flavored Cream Cheese</h4><span class="price">Cash $4.85 · Credit $5.04</span></div></div><div class="item rv"><span class="item-no">5</span><div><h4>Cream &amp; Nova Lox</h4><span class="price">Cash $11.75 · Credit $12.22</span></div></div><div class="item rv"><span class="item-no">6</span><div><h4>Muffins, Cakes, Lg. Cookie</h4><span class="price">Cash $3.50 · Credit $3.64</span></div></div></div></section><section class="course" id="c-grill"><div class="course-head rv"><h3>From the Grill</h3></div><p class="course-note rv">*Egg whites add 50¢.</p><div class="items"><div class="item rv"><span class="item-no">7</span><div><h4>Two Eggs on a Bagel*</h4><span class="price">Cash $6.35 · Credit $6.60</span></div></div><div class="item rv"><span class="item-no">8</span><div><h4>Two Eggs with Cheese*</h4><span class="price">Cash $7.35 · Credit $7.64</span></div></div><div class="item rv"><span class="item-no">9</span><div><h4>Two Eggs with Meat and Cheese*</h4><span class="price">Cash $7.85 · Credit $8.15</span></div></div><div class="item rv"><span class="item-no">10</span><div><h4>Hungry Man Hero*</h4><p>3 eggs, ham, bacon, sausage &amp; cheese.</p><span class="price">Cash $10.25 · Credit $10.55</span></div></div></div></section><section class="course" id="c-omelettes"><div class="course-head rv"><h3>Three Egg Omelettes</h3><span class="course-price">$9.35 Cash · $9.71 Credit</span></div><p class="course-note rv">Served with a bagel. Egg whites add $1.00.</p><div class="items"><div class="item rv"><span class="item-no">13</span><div><h4>Cheese or Meat</h4></div></div><div class="item rv"><span class="item-no">14</span><div><h4>Leo</h4><p>Nova lox &amp; onion.</p></div></div><div class="item rv"><span class="item-no">15</span><div><h4>Western</h4><p>Ham, peppers, onions &amp; cheese.</p></div></div><div class="item rv"><span class="item-no">16</span><div><h4>Greek</h4><p>Peppers, tomatoes, spinach &amp; feta cheese.</p></div></div><div class="item rv"><span class="item-no">17</span><div><h4>Garden</h4><p>Broccoli, peppers, mushrooms &amp; spinach.</p></div></div><div class="item rv"><span class="item-no">18</span><div><h4>Spanish</h4><p>Peppers, onions, tomatoes, jalapeños &amp; pepper jack cheese.</p></div></div></div></section><section class="course" id="c-heroes"><div class="course-head rv"><h3>Specialty Heroes</h3><span class="course-price">$11.99 · $12.47 with credit card</span></div><div class="items"><div class="item rv"><span class="item-no">25</span><div><h4>Big Joe</h4><p>Roast beef, melted mozzarella, bacon on garlic bread.</p></div></div><div class="item rv"><span class="item-no">26</span><div><h4>Fat Tony</h4><p>Chicken cutlet, bacon, melted American cheese with ranch.</p></div></div><div class="item rv"><span class="item-no">27</span><div><h4>Turkey Club</h4><p>Sliced turkey, bacon, cheese, lettuce &amp; tomato.</p></div></div><div class="item rv"><span class="item-no">28</span><div><h4>God Father</h4><p>Ham cappicola, salami, pepperoni, provolone, lettuce, tomato &amp; onion.</p></div></div><div class="item rv"><span class="item-no">29</span><div><h4>Daily Double</h4><p>Chicken cutlet, ham, melted Swiss cheese with ranch.</p></div></div><div class="item rv"><span class="item-no">30</span><div><h4>BLT</h4><p>Crispy bacon, romaine lettuce &amp; tomatoes.</p></div></div><div class="item rv"><span class="item-no">31</span><div><h4>Chicken Deluxe</h4><p>Chicken salad, bacon, lettuce &amp; tomato.</p></div></div><div class="item rv"><span class="item-no">32</span><div><h4>The Bobby Boy</h4><p>Grilled chicken, melted pepper jack cheese, lettuce, tomato &amp; onion, pepperoncinis, mayo &amp; Italian dressing.</p></div></div><div class="item rv"><span class="item-no">33</span><div><h4>American</h4><p>Roast beef, ham, turkey, American cheese, lettuce, tomato &amp; mayo.</p></div></div><div class="item rv"><span class="item-no">34</span><div><h4>Buffalo Bill</h4><p>Buffalo chicken, mozzarella, lettuce, tomato, jalapeños &amp; ranch.</p></div></div><div class="item rv"><span class="item-no">35</span><div><h4>Hot Pastrami</h4><p>Pastrami, Swiss cheese, cole slaw, pickles &amp; spicy mustard.</p></div></div><div class="item rv"><span class="item-no">36</span><div><h4>Arlo&#x27;s Way</h4><p>Chicken cutlet, bacon, mozzarella, cole slaw &amp; Russian dressing on a garlic hero.</p></div></div></div></section><section class="course" id="c-wraps"><div class="course-head rv"><h3>Wrap It Up</h3><span class="course-price">$9.99 Cash · $10.49 Credit</span></div><p class="course-note rv">Or create your own. All wraps served on plain or whole wheat.</p><div class="items"><div class="item rv"><span class="item-no">38</span><div><h4>Chicken Caesar</h4><p>Grilled chicken, Parmesan &amp; romaine lettuce.</p></div></div><div class="item rv"><span class="item-no">39</span><div><h4>Marianne&#x27;s</h4><p>Smoked turkey, brie, dried cranberries, romaine lettuce &amp; honey mustard.</p></div></div><div class="item rv"><span class="item-no">40</span><div><h4>Chicken Salad</h4><p>Chicken salad, tomatoes, bacon &amp; red onions.</p></div></div><div class="item rv"><span class="item-no">41</span><div><h4>Buffalo Chicken</h4><p>Buffalo chicken, lettuce &amp; blue cheese.</p></div></div><div class="item rv"><span class="item-no">42</span><div><h4>Rt. 25A</h4><p>Balsamic chicken, fresh mozzarella &amp; roasted red peppers.</p></div></div><div class="item rv"><span class="item-no">43</span><div><h4>Veggie Wrap</h4><p>Grilled vegetable, fresh mozzarella &amp; pesto.</p></div></div><div class="item rv"><span class="item-no">44</span><div><h4>Miller Place</h4><p>Chicken cutlet, Munster cheese, bacon, lettuce &amp; 1000 Island dressing.</p></div></div><div class="item rv"><span class="item-no">45</span><div><h4>Chipotle Chicken</h4><p>Chipotle chicken, melted cheddar, lettuce, onions &amp; jalapeños.</p></div></div><div class="item rv"><span class="item-no">46</span><div><h4>Pesto Wrap</h4><p>Grilled chicken, roasted red peppers, sun-dried tomatoes, romaine lettuce &amp; pesto.</p></div></div></div></section><section class="course" id="c-paninis"><div class="course-head rv"><h3>Paninis</h3><span class="course-price">$9.99 Cash · $10.39 Credit</span></div><div class="items"><div class="item rv"><span class="item-no">47</span><div><h4>Tuscany</h4><p>Chicken breast, roasted red peppers, provolone &amp; balsamic.</p></div></div><div class="item rv"><span class="item-no">48</span><div><h4>Smokehouse</h4><p>Smoked turkey, bacon, cheddar cheese &amp; BBQ sauce.</p></div></div><div class="item rv"><span class="item-no">49</span><div><h4>Mexican</h4><p>Turkey, jack cheese, jalapeños, tomatoes &amp; pesto.</p></div></div><div class="item rv"><span class="item-no">50</span><div><h4>Reuben</h4><p>Pastrami, cole slaw, sauerkraut, melted Swiss cheese &amp; 1000 Island.</p></div></div><div class="item rv"><span class="item-no">51</span><div><h4>Mt. Sinai</h4><p>Breaded eggplant, roasted red peppers &amp; fresh mozzarella.</p></div></div><div class="item rv"><span class="item-no">52</span><div><h4>Naples</h4><p>Grilled veggies, fresh mozzarella &amp; pesto mayo.</p></div></div><div class="item rv"><span class="item-no">53</span><div><h4>Italiano</h4><p>Grilled chicken, roasted red pepper &amp; fresh mozzarella.</p></div></div></div></section>
     </div>
   </section>
 
-  <section class="section section-tinted" id="gallery">
+  <section class="section section-alt" id="gallery">
     <div class="wrap">
-      <div class="section-head">
-        <span class="label reveal">A Look Inside</span>
-        <h2 class="section-title reveal">The counter, the case, the crowd.</h2>
+      <div class="s-head">
+        <span class="eyebrow rv">A Look Inside</span>
+        <h2 class="rv">The counter, the case, the crowd.</h2>
       </div>
-      <div class="gallery-grid">
-        <div class="gallery-tile gallery-tile--photo reveal">
-          <img src="images/gallery/bagel-case.jpg" alt="Fresh bagels in the display case, sorted by flavor" loading="lazy">
-        </div>
-        <div class="gallery-tile gallery-tile--photo reveal">
-          <img src="images/gallery/bagel-rack-wide.jpg" alt="A wider view of the bagel racks, sorted and labeled by flavor" loading="lazy">
-        </div>
-        <div class="gallery-tile gallery-tile--photo reveal">
-          <img src="images/gallery/sandwich.jpg" alt="A breakfast sandwich, cut in half, on wax paper" loading="lazy">
-        </div>
-        <div class="gallery-tile gallery-tile--photo reveal">
-          <img src="images/gallery/sandwich-newspaper.jpg" alt="A breakfast sandwich on wax paper, next to a folded newspaper" loading="lazy">
-        </div>
-        <div class="gallery-tile gallery-tile--photo reveal">
-          <img src="images/gallery/egg-bagel-sandwich.jpg" alt="An everything bagel egg and cheese sandwich, cut in half, on wax paper" loading="lazy">
-        </div>
-        <div class="gallery-tile gallery-tile--photo reveal">
-          <img src="images/gallery/egg-bagel-sandwich-2.jpg" alt="A close-up of an everything bagel with bacon, egg, and cheese" loading="lazy">
-        </div>
-      </div>
+      <div class="gal" id="gal"><figure class="tile rv" data-i="0" tabindex="0" role="button" aria-label="Enlarge: Fresh bagels in the display case, sorted by flavor"><img src="images/gallery/bagel-case.jpg" alt="Fresh bagels in the display case, sorted by flavor" loading="lazy" decoding="async"></figure><figure class="tile rv" data-i="1" tabindex="0" role="button" aria-label="Enlarge: A wider view of the bagel racks, sorted and labeled by flavor"><img src="images/gallery/bagel-rack-wide.jpg" alt="A wider view of the bagel racks, sorted and labeled by flavor" loading="lazy" decoding="async"></figure><figure class="tile rv" data-i="2" tabindex="0" role="button" aria-label="Enlarge: A breakfast sandwich, cut in half, on wax paper"><img src="images/gallery/sandwich.jpg" alt="A breakfast sandwich, cut in half, on wax paper" loading="lazy" decoding="async"></figure><figure class="tile rv" data-i="3" tabindex="0" role="button" aria-label="Enlarge: A breakfast sandwich on wax paper, next to a folded newspaper"><img src="images/gallery/sandwich-newspaper.jpg" alt="A breakfast sandwich on wax paper, next to a folded newspaper" loading="lazy" decoding="async"></figure><figure class="tile rv" data-i="4" tabindex="0" role="button" aria-label="Enlarge: An everything bagel egg and cheese sandwich, cut in half, on wax paper"><img src="images/gallery/egg-bagel-sandwich.jpg" alt="An everything bagel egg and cheese sandwich, cut in half, on wax paper" loading="lazy" decoding="async"></figure><figure class="tile rv" data-i="5" tabindex="0" role="button" aria-label="Enlarge: A close-up of an everything bagel with bacon, egg, and cheese"><img src="images/gallery/egg-bagel-sandwich-2.jpg" alt="A close-up of an everything bagel with bacon, egg, and cheese" loading="lazy" decoding="async"></figure></div>
     </div>
   </section>
 
-  <section class="section" id="about">
-    <div class="wrap about-grid">
-      <div class="about-copy reveal">
-        <span class="label" style="color:var(--gold-deep);display:block;margin-bottom:14px;">The Shop</span>
-        <h2 class="section-title" style="margin-bottom:20px;">A deli that keeps commuters' hours.</h2>
-        <p>
-          Route 25A is dark when the lights come on inside. Contractors,
-          night-shift crews, and early commuters make up the first rush
-          &mdash; the counter knows most of them by their order, not their name.
-        </p>
-        <p>
-          Bagels are boiled fresh daily, the deli case is stocked with Boar's
-          Head, and the griddle runs non-stop through the morning.
-        </p>
+  <section class="section" id="reviews">
+    <div class="wrap">
+      <div class="s-head">
+        <span class="eyebrow rv">Word on the Street</span>
+        <h2 class="rv">What regulars say.</h2>
       </div>
-      <div class="pull-quote reveal">
+      <div class="reviews"><article class="card rv"><div class="stars" aria-label="5 out of 5 stars"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div><p class="quote">“Absolutely amazing, love this place, this is going to be my go to! I love the community there, good vibes!”</p><span class="who">Peter O. · Miller Place, NY</span></article><article class="card rv"><div class="stars" aria-label="5 out of 5 stars"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div><p class="quote">“Best bagels by far. No one compares. Not like the other places where they try selling you bagels that taste like white bread.”</p><span class="who">Lance T. · Farmingville, NY</span></article><article class="card rv"><div class="stars" aria-label="5 out of 5 stars"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div><p class="quote">“Love this place! Great food and service. Very accommodating and extremely friendly atmosphere.”</p><span class="who">K.M. · Smithtown, NY</span></article><article class="card rv"><div class="stars" aria-label="4 out of 5 stars"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" class="off" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div><p class="quote">“This is the best bagel place in the tri-town area (Miller Place, Mt. Sinai, Port Jeff). Always fresh baked goods… they make my favorite bagel here, Sunflower. They have a coffee bar with international flavor creamers. This place also has a nice salad bar!”</p><span class="who">Bill S. · Long Island, NY</span></article></div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="about">
+    <div class="wrap about">
+      <div class="rv">
+        <span class="eyebrow">The Shop</span>
+        <h2 style="font-size:clamp(1.95rem,3.8vw,2.8rem);margin:14px 0 20px">A deli that keeps commuters' hours.</h2>
+        <p>Route 25A is dark when the lights come on inside. Contractors, night-shift crews, and early commuters make up the first rush — the counter knows most of them by their order, not their name.</p>
+        <p>Bagels are boiled fresh daily, the deli case is stocked with Boar's Head, and the griddle runs non-stop through the morning.</p>
+      </div>
+      <div class="pull rv">
         <div class="hero-rule"></div>
-        <p>&ldquo;Open before the sun, closed by mid-afternoon &mdash; built entirely around the hours people actually need it.&rdquo;</p>
-        <span class="cite">Miller Place Bagels &amp; Deli</span>
-      </div>
-    </div>
-  </section>
-
-  <section class="section section-tinted" id="reviews">
-    <div class="wrap">
-      <div class="section-head">
-        <span class="label reveal">Word on the Street</span>
-        <h2 class="section-title reveal">What regulars say.</h2>
-      </div>
-      <div class="reviews-grid">
-        <div class="review-card reveal">
-          <div class="review-stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-          <p class="review-quote">&ldquo;Absolutely amazing, love this place, this is going to be my go to! I love the community there, good vibes!&rdquo;</p>
-          <span class="review-name">Peter O. &middot; Miller Place, NY</span>
-        </div>
-        <div class="review-card reveal">
-          <div class="review-stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-          <p class="review-quote">&ldquo;Best bagels by far. No one compares. Not like the other places where they try selling you bagels that taste like white bread.&rdquo;</p>
-          <span class="review-name">Lance T. &middot; Farmingville, NY</span>
-        </div>
-        <div class="review-card reveal">
-          <div class="review-stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-          <p class="review-quote">&ldquo;Love this place! Great food and service. Very accommodating and extremely friendly atmosphere.&rdquo;</p>
-          <span class="review-name">K.M. &middot; Smithtown, NY</span>
-        </div>
-        <div class="review-card reveal">
-          <div class="review-stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
-          <p class="review-quote">&ldquo;This is the best bagel place in the tri-town area (Miller Place, Mt. Sinai, Port Jeff). Always fresh baked goods&hellip; they make my favorite bagel here, Sunflower. They have a coffee bar with international flavor creamers. This place also has a nice salad bar!&rdquo;</p>
-          <span class="review-name">Bill S. &middot; Long Island, NY</span>
-        </div>
+        <q>Open before the sun, closed by mid-afternoon — built entirely around the hours people actually need it.</q>
+        <cite>Miller Place Bagels &amp; Deli</cite>
       </div>
     </div>
   </section>
 
   <section class="section" id="visit">
-    <div class="wrap location-grid">
-      <div class="reveal">
-        <span class="label" style="color:var(--gold-deep);display:block;margin-bottom:14px;">Find Us</span>
-        <h2 class="section-title" style="margin-bottom:24px;">Visit &amp; Hours</h2>
-        <div class="hours-list">
-          <div><span>Monday &ndash; Saturday</span><span>5:00 AM &ndash; 3:30 PM</span></div>
-          <div><span>Sunday</span><span>5:00 AM &ndash; 3:00 PM</span></div>
+    <div class="wrap visit">
+      <div class="rv">
+        <span class="eyebrow">Find Us</span>
+        <h2 style="font-size:clamp(1.95rem,3.8vw,2.8rem);margin:14px 0 24px">Visit &amp; Hours</h2>
+        <div class="hours" id="hours">
+          <div data-days="1,2,3,4,5,6"><span>Monday – Saturday</span><span>5:00 AM – 3:30 PM</span></div>
+          <div data-days="0"><span>Sunday</span><span>5:00 AM – 3:00 PM</span></div>
         </div>
-        <dl class="info-block">
-          <dt>Address</dt>
-          <dd>159 Route 25A, Ste 1, Miller Place, NY 11764</dd>
+        <dl class="info">
+          <dt>Address</dt><dd>159 Route 25A, Ste 1, Miller Place, NY 11764</dd>
+          <dt>Phone</dt><dd><a href="tel:+16313314576">(631) 331-4576</a></dd>
         </dl>
-        <dl class="info-block">
-          <dt>Phone</dt>
-          <dd><a href="tel:+16313314576">(631) 331-4576</a></dd>
-        </dl>
-        <a class="btn btn-primary" style="margin-top:8px;" target="_blank" rel="noopener"
-           href="https://www.google.com/maps/search/?api=1&query=159+Route+25A+Miller+Place+NY+11764">
-          Get Directions
+        <a class="btn btn-gold" href="https://www.google.com/maps/search/?api=1&amp;query=159+Route+25A+Miller+Place+NY+11764" target="_blank" rel="noopener">Get Directions
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
         </a>
       </div>
-      <div class="map-note reveal">
-        <span class="label">159 Route 25A</span>
-        <p>Right on the main road through Miller Place &mdash; easy in, easy out, before the morning traffic builds.</p>
+      <div class="mapcard rv">
+        <span class="eyebrow">159 Route 25A</span>
+        <p>Right on the main road through Miller Place — easy in, easy out, before the morning traffic builds.</p>
       </div>
     </div>
   </section>
-
 </main>
 
-<div class="lightbox" id="lightbox" hidden>
-  <button class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
-  <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous photo">&#8249;</button>
-  <img class="lightbox-img" id="lightboxImg" src="" alt="">
-  <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next photo">&#8250;</button>
-</div>
-
-<footer class="site-footer">
-  <div class="wrap footer-inner">
-    <span>&copy; <span id="year"></span> Miller Place Bagels &amp; Deli.</span>
+<footer class="foot">
+  <div class="wrap foot-in">
+    <span>© <span id="yr">2026</span> Miller Place Bagels &amp; Deli.</span>
     <span>159 Route 25A, Miller Place, NY</span>
   </div>
 </footer>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button class="lb-btn lb-x" id="lbX" aria-label="Close"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+  <button class="lb-btn lb-p" id="lbP" aria-label="Previous"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+  <img id="lbImg" src="" alt="">
+  <button class="lb-btn lb-n" id="lbN" aria-label="Next"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+  <span class="lb-count" id="lbCount"></span>
+</div>
 
 <script src="js/script.js"></script>
 </body>
