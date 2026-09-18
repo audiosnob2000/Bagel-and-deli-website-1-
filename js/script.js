@@ -166,8 +166,16 @@ safe(function(){
     courses.forEach(function(c){ if (c){ c.classList.remove("m-hide"); c.classList.remove("m-enter"); } });
     if (filterBar) filterBar.classList.remove("active");
   }
+  var wasMobile = null;
   function syncResponsive(){
-    if (isMobile()){ applyFilter(current < 0 ? 0 : current); }
+    var mobileNow = isMobile();
+    /* Mobile browsers fire resize when the address bar shows/hides on
+       scroll, without crossing the mobile/desktop breakpoint -- only react
+       when the breakpoint itself actually changes, so re-showing the bar
+       doesn't clobber a "Show all" choice back into a filtered view. */
+    if (mobileNow === wasMobile) return;
+    wasMobile = mobileNow;
+    if (mobileNow){ applyFilter(current < 0 ? 0 : current); }
     else { clearFilter(); }
   }
   if (showAllBtn) showAllBtn.addEventListener("click", function(){
