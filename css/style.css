@@ -165,10 +165,16 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .menu-filter-bar{display:none}
 @keyframes menufade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @media (max-width:720px){
-  .menu-filter-bar.active{
+  /* Toggling `display` here changes .menunav-wrap's box height while it's
+     stuck to the top mid-scroll, which is a known trigger for the sticky
+     element to flicker or vanish on mobile WebKit/Chrome. Keep the row's
+     height constant always and only toggle visibility/opacity instead. */
+  .menu-filter-bar{
     display:flex;align-items:center;justify-content:space-between;gap:14px;
     max-width:var(--maxw);margin:14px auto 0;padding:0 var(--sp);
+    visibility:hidden;opacity:0;pointer-events:none;transition:opacity .2s;
   }
+  .menu-filter-bar.active{visibility:visible;opacity:1;pointer-events:auto}
   .menu-filter-bar span{font-size:.78rem;color:var(--text-soft)}
   .menu-filter-bar button{font-size:.78rem;font-weight:800;color:var(--accent-text);text-decoration:underline;text-underline-offset:3px;white-space:nowrap;flex:none}
   .course.m-hide{display:none}
