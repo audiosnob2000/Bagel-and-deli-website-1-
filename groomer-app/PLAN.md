@@ -1,7 +1,7 @@
 # Slotted for Groomers: Product & Build Plan
 
 > Working name: **Slotted**. It works for any appointment-based business, which suits the plan to reuse this app for landscapers, salons and others.
-> Design mockup (8 screens, clickable): https://claude.ai/artifact/Tg96dmvG8sMc8nWSVFwDPJ
+> Design mockup (9 screens, clickable): https://claude.ai/artifact/Tg96dmvG8sMc8nWSVFwDPJ
 
 **Who it's for:** solo groomers who run one shop and use a desktop at the front desk and a phone at the grooming table.
 **The feature that sets it apart:** two-way texting with clients, where every message is filed under a specific pet. Reviewers of Savvy Pet Spa said this was missing.
@@ -31,12 +31,13 @@
 2. **Messages:** three panes. Conversation list → thread → pet details (groom notes, vaccines, next visit). The composer has an **About: [pet]** tag, quick replies and photo attachments.
 3. **Calendar:** day, week and month views. Color shows status (confirmed, awaiting reply, unpaid, done), and a line marks the current time.
 4. **Client and pets:** household header with the owner's text consent on record, a tab for each pet, groom notes, handling warnings, visit history, vaccines and photos.
+5. **Settings → Texting:** SMS and WhatsApp shown as two separate channel cards, each with its own connect/manage/disconnect controls. Click "Connect WhatsApp" to walk through the actual Embedded Signup flow described in §3b (consent → choose business → verify number → enter code → connected).
 
 **Phone (grooming table)**
-5. **Today:** a large "In progress" card with Text Owner and Check Out buttons, plus the rest of the day.
-6. **Thread:** the same pet tagging and quick replies as desktop, sized for thumbs.
-7. **New booking:** pick services and only the time slots that fit the total length are shown. Includes reminder and confirmation switches.
-8. **Checkout:** tip, payment method, one-tap rebook in 6 weeks, pickup photo text.
+6. **Today:** a large "In progress" card with Text Owner and Check Out buttons, plus the rest of the day.
+7. **Thread:** the same pet tagging and quick replies as desktop, sized for thumbs.
+8. **New booking:** pick services and only the time slots that fit the total length are shown. Includes reminder and confirmation switches.
+9. **Checkout:** tip, payment method, one-tap rebook in 6 weeks, pickup photo text.
 
 ---
 
@@ -75,6 +76,16 @@ Outbound messages use the **About** chip in the composer. Because every message 
 - **Quiet hours:** automated texts only go out 8 AM–8 PM in the business's time zone.
 - **Links:** payment links use your own domain. Link shorteners like bit.ly get filtered by carriers.
 - **Message length:** show a segment counter. A single emoji switches the text to a different encoding, which cuts the limit to 70 characters per segment and can double the cost.
+
+### 3b. WhatsApp as a second channel (optional, off by default)
+
+Not a replacement for SMS — a client has to have WhatsApp installed and be willing to use it, which isn't universal in the US, especially with an older or local clientele. Offer it as a **channel a groomer can turn on**, with both numbers feeding the same unified thread per household.
+
+**Connecting it (BYOA, same principle as Twilio):** Meta's WhatsApp Business Platform (Cloud API) has a built-in flow for this, called **Embedded Signup** — a popup, like "Sign in with Google," where the groomer logs into their own free Meta Business account, verifies a phone number, and is done. No developer console, no copy-pasted API keys. The mockup's Settings → Texting screen shows this exact flow: consent → choose/create a business → verify a number → enter the code → connected. Building the button that starts it requires *you* to register once as a Meta Tech Provider and pass Meta's app review — a one-time platform setup, not something each groomer does.
+
+**The one real behavior difference:** WhatsApp only allows free-form messages within a **24-hour window** after a client has messaged in. Outside that window (exactly the situation for a 24-hrs-before reminder), the message must use a **pre-approved template** — fixed wording with fill-in variables, submitted to Meta ahead of time and usually approved within hours. This fits naturally, since reminders, payment nudges and rebook nudges are already template-shaped; it mainly means the groomer can't cold-text a quiet client free-form without it being a template too.
+
+**Cost:** verify current Meta pricing before committing to numbers, but directionally: a client-initiated conversation (they text first) is typically free, and business-initiated template messages are billed per message, often a bit cheaper than SMS for US utility-category templates. Registration friction is lighter than 10DLC — Meta's business verification, no carrier brand/campaign wait.
 
 ---
 
@@ -179,5 +190,5 @@ If you later build the optional **hosted texting tier** (§9) for groomers who'd
 1. Final app name (Slotted is a placeholder; ShowUp and Trellis were the other candidates).
 2. Local numbers or toll-free as the setup wizard's recommended default (it's the groomer's own Twilio account either way, but the wizard should steer them). Local numbers feel more personal; toll-free gets approved faster.
 3. Whether owners should get a web link for booking, payment and photos in a later version.
-4. Repo strategy: the spec says "one repo per business type". Consider **one core repo with a per-business-type config** (terms like pet or lawn, a default services menu, text templates) so fixes to login, calendar, billing and messaging reach every version at once.
+4. Repo strategy: the spec says "one repo per business type". This build now lives in its own repo (`audiosnob2000/dog-groomer-app`) rather than the bagel & deli website's, which is the right first step. If a landscaper or salon version gets built later, consider **one core repo with a per-business-type config** (terms like pet or lawn, a default services menu, text templates) so fixes to login, calendar, billing and messaging reach every version at once, instead of a full second repo.
 5. Whether to eventually build the **optional hosted texting tier** (§7) for groomers who don't want to set up their own Twilio account. It's a real upsell, but it means taking back on the metered cost and the 10DLC-as-a-platform burden that BYOA currently avoids — worth revisiting once you have paying BYOA customers and can see how much support time the Twilio setup step actually costs you.
