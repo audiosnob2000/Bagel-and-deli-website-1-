@@ -18,8 +18,9 @@
 | Rebooking | Not included | Suggest a date 6 weeks out at checkout, plus a "Due to rebook" list | Most grooming revenue comes from repeat visits |
 | Pet records | `notes` field | **Groom notes** (blade, face, finish), handling flags, vaccine expiry alerts, before and after photos | Groomers need to repeat the same cut every time. Expired vaccines are a liability risk. |
 | Checkout | A `paid` true/false flag | Line items, tip, payment method, a text-to-pay link and a pickup photo | This is how the day actually ends at the shop |
+| Who pays for texting | Not addressed | **Bring-your-own-account (BYOA) by default** — each groomer connects their own Twilio account during setup, so the texting bill goes to them, not you | Keeps the app close to free for you to run, and supports going back to the original $15–25/mo target (see §7) |
 | Firebase plan | "Free to start" | **The Blaze (pay-as-you-go) plan is required.** No calling/voice feature is planned — this is texting only. But Firebase's free (Spark) plan blocks Cloud Functions from making *any* outbound network request to a non-Google service, so even a text-sending API request to Twilio (or a request to Stripe) needs Blaze. | Blaze still includes a free usage allowance, so early costs stay close to $0 |
-| Pricing | $15–25/mo | **$29–39/mo with a text allowance included** (see §7) | Text-message costs would eat most of a $15 plan |
+| Pricing | $15–25/mo | **$19–25/mo holds, roughly** — BYOA means texting costs are billed to the groomer's own Twilio account, not baked into your price (see §7) | The original range was only at risk if *you* had to cover texting costs; BYOA avoids that |
 
 ---
 
@@ -41,11 +42,15 @@
 
 ## 3. In-app client messaging (the new feature)
 
+### Who pays for texting
+Every real texting vendor (Twilio, Vonage, Plivo, AWS, Telnyx, Bandwidth...) charges per message plus a small monthly number fee, because they're all passing through carrier costs — that's not a markup you can shop your way out of. What you *can* control is whose bill it lands on. This plan defaults to **bring-your-own-account (BYOA)**: each groomer connects their *own* Twilio account during setup, so texts are sent and billed under *their* account. You never see a Twilio invoice, and the app itself costs you almost nothing to run per business. A shared account you run and meter (the "hosted" model from the earlier draft of this plan) is kept as an optional later add-on — see §7 and §9.
+
 ### How it works
-- Each business gets **its own local phone number** from Twilio, set up during onboarding. The groomer's personal number stays private.
+- **Setup wizard, once, during onboarding:** the groomer creates a Twilio account (or signs into an existing one) and, following an in-app guide, (1) generates a restricted **API Key** in their Twilio console — never their master Auth Token, (2) buys a local number, and (3) completes US **A2P 10DLC** brand/campaign registration, all inside their own account. They paste the resulting Account SID and API Key into Settings → Texting. The app never asks for their Twilio login.
+- Those credentials are stored as a **per-business secret** (Secret Manager, referenced by name from Firestore — the raw key is never written to a document) and used only by Cloud Functions, never sent to the browser.
 - Owners text that number from their normal texting app. **Owners don't install anything.**
-- **Outbound:** the groomer writes in the app → a Cloud Function → the Twilio API → the owner's phone.
-- **Inbound:** Twilio calls a webhook (an HTTPS Cloud Function). It checks Twilio's signature, finds the business by the number texted (`To`), finds the owner by the sender's number (`From`), saves the message and updates the unread count. It also sends a web push notification to the groomer.
+- **Outbound:** the groomer writes in the app → a Cloud Function loads *that business's own* Twilio credentials → the Twilio API → the owner's phone.
+- **Inbound:** Twilio calls a webhook (an HTTPS Cloud Function) on the groomer's own number. The function looks up which business owns that number (`numberIndex`), validates Twilio's signature using *that business's* auth token, finds the owner by the sender's number (`From`), saves the message and updates the unread count, and sends a web push notification to the groomer.
 
 ### How each message gets filed to a pet
 Each message is matched to a pet automatically, checking these rules in order:
@@ -64,7 +69,7 @@ Outbound messages use the **About** chip in the composer. Because every message 
 - "Ready for pickup" with a photo (MMS).
 
 ### Compliance and deliverability (don't skip)
-- **US A2P 10DLC registration** is required to send texts from a local business number. The app is the platform, and each groomer is registered as a brand with a campaign. **Approval can take days to weeks, so start it in Phase 0.** Toll-free numbers with toll-free verification are the fallback.
+- **US A2P 10DLC registration** is required to send texts from a local business number. Under BYOA each groomer completes it **inside their own Twilio account** — your app can't do it for them, only guide them through it with a step-by-step walkthrough and pre-filled copy. **Approval can take days to weeks**, so the setup wizard should say this up front and let the groomer keep using the rest of the app while it's pending. Toll-free numbers with toll-free verification are a faster fallback.
 - **Consent:** record when and how each owner agreed to texts (a checkbox on the client form, or their first text in). The mockup shows "Agreed to texts on Mar 12, 2024".
 - **STOP, START and HELP** are handled by Twilio's opt-out system and copied to `contact.smsOptOut`. An owner who opted out gets no automated texts, and the groomer's send button is blocked.
 - **Quiet hours:** automated texts only go out 8 AM–8 PM in the business's time zone.
@@ -77,8 +82,11 @@ Outbound messages use the **About** chip in the composer. Because every message 
 
 ```
 businesses/{bizId}
-  name, email, timezone, hours, smsNumber (E.164), twilioSubaccountSid,
-  subscriptionStatus, stripeCustomerId, trialEndsAt, smsUsageThisPeriod
+  name, email, timezone, hours,
+  subscriptionStatus, stripeCustomerId, trialEndsAt
+  smsProvider{ mode ('byoa'|'hosted'), smsNumber (E.164), twilioAccountSid,
+               twilioApiKeySid, secretRef, tenDlcStatus, smsSentThisPeriod }
+               ← secretRef points to a Secret Manager entry holding the API key secret; never stored in Firestore
   /services/{id}      name, durationMin, price, isAddOn
   /households/{id}    displayName ("Nair household"), notes, balanceCents
      contacts: [{ name, phoneE164, email, smsConsentAt, smsConsentSource, smsOptOut }]
@@ -98,7 +106,7 @@ numberIndex/{e164}    bizId       ← routes inbound texts to the right business
 **Key choices**
 - Store appointment times as a `Timestamp`, not separate date and time strings. Keep each business's `timezone` so daylight-saving changes and "24 hrs before" are calculated correctly.
 - Put phone numbers in E.164 format (+15550142231) when they're saved, so inbound matching is a simple lookup.
-- **Security rules:** every read and write must satisfy `request.auth.uid` = a member of `bizId`. Only Cloud Functions (Admin SDK) write `messages` with `direction: in`, `subscriptionStatus` and `smsUsageThisPeriod`.
+- **Security rules:** every read and write must satisfy `request.auth.uid` = a member of `bizId`. Only Cloud Functions (Admin SDK) write `messages` with `direction: in`, `subscriptionStatus` and `smsProvider.smsSentThisPeriod`. `smsProvider.secretRef` is never read by client-facing rules — only Cloud Functions resolve it, and only against Secret Manager.
 
 ---
 
@@ -108,13 +116,14 @@ numberIndex/{e164}    bizId       ← routes inbound texts to the right business
 GitHub Pages (static React + Tailwind)  ──Firebase SDK──▶  Firestore / Auth
           │                                                   ▲
           └── callable functions ──▶ Cloud Functions ─────────┘
-                                        │   ├─▶ Twilio  (send SMS/MMS, provision numbers)
-                                        │   ├─◀ Twilio  (inbound + status webhooks)
+                                        │   ├─▶ Twilio  (send SMS/MMS, using each business's own account)
+                                        │   ├─◀ Twilio  (inbound + status webhooks, per business number)
                                         │   ├─▶ SendGrid (email fallback)
                                         │   └─◀▶ Stripe (subscription + webhooks)
                                         └── Scheduler (every 15 min: reminders, follow-ups)
 ```
 
+- **No shared Twilio credential:** Cloud Functions never hold one platform-wide key. Every send or inbound-webhook validation first looks up `bizId` → `smsProvider.secretRef` in Secret Manager and uses that business's own credentials.
 - **GitHub Pages notes:** use `HashRouter` (or the `404.html` redirect trick) so page reloads don't return 404. The Firebase web config is meant to be public, and security comes from the rules. **Never** put Twilio, Stripe or SendGrid secret keys in the frontend. Keep them in Cloud Functions secrets (`defineSecret`).
 - **Make it an installable PWA:** add a manifest and service worker so it installs to the home screen on the phone at the grooming table, and turn on Firestore offline persistence for spotty Wi-Fi.
 - **Reminder scheduler:** run every 15 minutes rather than once a day. For each appointment where `startAt` is within 24 hrs, `reminderSentAt` is empty and the status is booked, send the reminder and set `reminderSentAt` **in a transaction** so it's never sent twice. Pause the reminder if the time falls in quiet hours. A cancelled or rescheduled appointment clears or updates its pending reminders.
@@ -126,11 +135,11 @@ GitHub Pages (static React + Tailwind)  ──Firebase SDK──▶  Firestore /
 
 | Phase | Deliverable | Notes |
 |---|---|---|
-| **0. Setup** | Firebase (Blaze plan), Twilio account (ISV), start **10DLC brand/campaign registration**, Stripe products, SendGrid | Start 10DLC on day one because approval is slow |
+| **0. Setup** | Firebase (Blaze plan), Stripe products, SendGrid | No platform-wide Twilio account needed — each groomer brings their own in Phase 2 |
 | **1. Core** | Auth and business onboarding (hours, time zone, services menu) → households and pets → calendar and booking → Today dashboard | Include CSV import of an existing client list, since switching is the biggest hurdle for new customers |
-| **2. Messaging** | Number provisioning, send and receive, threads, pet tagging, quick replies, MMS photos, unread badges, web push | Test with your own phone first |
+| **2. Messaging** | **BYOA setup wizard** (connect a Twilio account, buy a number, 10DLC walkthrough) → send and receive, threads, pet tagging, quick replies, MMS photos, unread badges, web push | Test end-to-end with your own Twilio account and phone first |
 | **3. Automations** | 24-hr reminder with reply-C confirmation, no-reply follow-up, payment reminders, rebook nudges, vaccine expiry alerts | Every automation respects opt-out and quiet hours |
-| **4. Billing** | Stripe Checkout (14-day trial), Customer Portal for cancelling, webhook → `subscriptionStatus`, 7-day grace period, text usage metering | A lapsed account becomes **read-only** (never deleted) and automations pause |
+| **4. Billing** | Stripe Checkout (14-day trial), Customer Portal for cancelling, webhook → `subscriptionStatus`, 7-day grace period | A lapsed account becomes **read-only** (never deleted) and automations pause. No text-usage metering needed for you under BYOA — that's Twilio billing the groomer directly; only build it if you later add the hosted tier (§9) |
 | **5. Polish and beta** | Checkout flow, pickup photos, empty states, accessibility pass, PWA install, beta with 3–5 local groomers | |
 | **Later** | Online self-booking page for owners, Stripe Connect for card-on-file payments (auto-marks paid), salon tier with staff columns, other business types | |
 
@@ -140,9 +149,13 @@ Messaging comes before billing because it's the reason groomers will switch. Cha
 
 ## 7. Pricing reality check
 
-Rough estimate for a solo groomer: about 6 dogs a day × 22 days ≈ **130 appointments a month**. Each appointment generates about 6–8 text segments (reminder, reply, follow-up, pickup text, some back-and-forth). That's roughly **800–1,000 segments a month**, and **Twilio charges for incoming texts as well as outgoing ones**. At about 1¢ per segment including carrier fees, plus MMS photos at a few cents each and the number's monthly fee, that's **around $10–15 a month in texting costs for each groomer**.
+Under BYOA, texting is billed by Twilio directly to the groomer's own card — it never touches your revenue or your costs. That means the subscription price only has to cover the app itself, which has close to zero marginal cost per business. **This supports going back to the original $15–25/mo target.**
 
-Recommendation: **$29/mo with 1,000 texts included, or $39/mo with unlimited fair-use texting**, plus a 14-day trial. Show usage in Settings. *Check current Twilio and 10DLC fees before setting prices, because they change.*
+For reference, so you can set expectations in the setup wizard and marketing copy: a solo groomer doing about 6 dogs a day × 22 days ≈ **130 appointments a month**, at roughly 6–8 text segments per appointment (reminder, reply, follow-up, pickup text), lands around **800–1,000 segments a month**. Twilio charges for incoming texts as well as outgoing ones. At about 1¢ per segment plus MMS photos and the number's monthly fee, that's roughly **$10–15/mo paid to Twilio by the groomer, directly** — worth stating plainly up front so it's never a surprise later.
+
+**Recommendation: $19–25/mo** for the app subscription, 14-day trial, texting cost called out separately and clearly in the setup wizard. Show the groomer's own `smsProvider.smsSentThisPeriod` count in Settings so they can watch their own Twilio spend.
+
+If you later build the optional **hosted texting tier** (§9) for groomers who'd rather not touch Twilio themselves, price *that* tier closer to the earlier draft of this plan — **$29–39/mo with a text allowance** — since at that point you're the one fronting the metered cost and need it covered. *Check current Twilio and 10DLC fees before finalizing any price, because they change.*
 
 ---
 
@@ -164,6 +177,7 @@ Recommendation: **$29/mo with 1,000 texts included, or $39/mo with unlimited fai
 ## 9. Open decisions
 
 1. Final app name (Slotted is a placeholder; ShowUp and Trellis were the other candidates).
-2. Local numbers (10DLC) or toll-free as the default. Local numbers feel more personal, and toll-free gets approved faster.
+2. Local numbers or toll-free as the setup wizard's recommended default (it's the groomer's own Twilio account either way, but the wizard should steer them). Local numbers feel more personal; toll-free gets approved faster.
 3. Whether owners should get a web link for booking, payment and photos in a later version.
 4. Repo strategy: the spec says "one repo per business type". Consider **one core repo with a per-business-type config** (terms like pet or lawn, a default services menu, text templates) so fixes to login, calendar, billing and messaging reach every version at once.
+5. Whether to eventually build the **optional hosted texting tier** (§7) for groomers who don't want to set up their own Twilio account. It's a real upsell, but it means taking back on the metered cost and the 10DLC-as-a-platform burden that BYOA currently avoids — worth revisiting once you have paying BYOA customers and can see how much support time the Twilio setup step actually costs you.
