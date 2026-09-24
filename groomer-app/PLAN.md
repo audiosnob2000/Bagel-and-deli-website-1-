@@ -18,7 +18,7 @@
 | Rebooking | Not included | Suggest a date 6 weeks out at checkout, plus a "Due to rebook" list | Most grooming revenue comes from repeat visits |
 | Pet records | `notes` field | **Groom notes** (blade, face, finish), handling flags, vaccine expiry alerts, before and after photos | Groomers need to repeat the same cut every time. Expired vaccines are a liability risk. |
 | Checkout | A `paid` true/false flag | Line items, tip, payment method, a text-to-pay link and a pickup photo | This is how the day actually ends at the shop |
-| Firebase plan | "Free to start" | **The Blaze (pay-as-you-go) plan is required.** Scheduled functions and outbound calls to Twilio or Stripe don't run on the free plan. | Blaze still includes a free usage allowance, so early costs stay close to $0 |
+| Firebase plan | "Free to start" | **The Blaze (pay-as-you-go) plan is required.** No calling/voice feature is planned — this is texting only. But Firebase's free (Spark) plan blocks Cloud Functions from making *any* outbound network request to a non-Google service, so even a text-sending API request to Twilio (or a request to Stripe) needs Blaze. | Blaze still includes a free usage allowance, so early costs stay close to $0 |
 | Pricing | $15–25/mo | **$29–39/mo with a text allowance included** (see §7) | Text-message costs would eat most of a $15 plan |
 
 ---
