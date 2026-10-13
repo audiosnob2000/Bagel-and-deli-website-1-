@@ -8,6 +8,17 @@ var $ = function(id){ return document.getElementById(id); };
 /* every enhancement is independent — one failure must not blank the page */
 function safe(fn){ try { fn(); } catch (err) { if (window.console) console.warn(err); } }
 
+/* ---------- always open on the home/hero section ----------
+   Browsers restore the last scroll position (and lazy-loaded gallery images
+   shifting layout can leave a restored offset deep in the page). Unless the
+   visitor followed a deep link like /#gallery, start at the top. */
+safe(function(){
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  if (location.hash) return;
+  window.scrollTo(0, 0);
+  addEventListener("pageshow", function(e){ if (e.persisted) window.scrollTo(0, 0); });
+});
+
 /* ---------- headline split into masked words ---------- */
 safe(function(){
   var root = $("h1"); if (!root) return;
