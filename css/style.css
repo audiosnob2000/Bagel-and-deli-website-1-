@@ -134,9 +134,13 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 @media (min-width:981px){
   /* Size the hero so header + hero + flavor ticker fill the first screen
      exactly, i.e. the moving banner is visible on landing without scrolling. */
-  .hero-grid{height:calc(100svh - 75px - 61px);min-height:480px;max-height:820px}
+  .hero-grid{height:calc(100svh - 75px - 61px);min-height:420px;max-height:820px}
   .hero-copy{padding-block:clamp(1.5rem,4vh,6.2rem)}
   .hero-shot{min-height:0}
+  /* Scale the copy with screen height too, so short windows never clip it. */
+  .hero h1{font-size:clamp(2.1rem,min(5.6vw,8.6vh),4.5rem);margin-top:clamp(12px,2.2vh,26px)}
+  .hero-rule{margin:clamp(14px,3vh,32px) 0 clamp(12px,2.4vh,24px)}
+  .hero-cta{margin-top:clamp(16px,3vh,34px)}
   /* Only this photo's desktop framing needs contain: the sign runs close to
      the right edge of the source shot, so any crop clips it. Mobile keeps the
      original full-bleed cover treatment. */
