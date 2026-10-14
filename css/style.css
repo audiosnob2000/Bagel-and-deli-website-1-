@@ -137,10 +137,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   .hero-grid{height:calc(100svh - 75px - 61px);min-height:420px;max-height:820px}
   .hero-copy{padding-block:clamp(1.5rem,4vh,6.2rem)}
   .hero-shot{min-height:0}
-  /* Let the hero span the full window (no dark side margins on wide screens)
-     while the copy still lines up with the header's content edge. */
-  .hero-grid{max-width:none}
-  .hero-copy{padding-left:max(var(--sp),calc((100vw - var(--maxw))/2 + var(--sp)))}
   /* Scale the copy with screen height too, so short windows never clip it. */
   .hero h1{font-size:clamp(2.1rem,min(5.6vw,8.6vh),4.5rem);margin-top:clamp(12px,2.2vh,26px)}
   .hero-rule{margin:clamp(14px,3vh,32px) 0 clamp(12px,2.4vh,24px)}
@@ -149,11 +145,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
      the right edge of the source shot, so any crop clips it. Mobile keeps the
      original full-bleed cover treatment. */
   .shot-inner img{object-fit:contain;object-position:center center}
-}
-/* On wide windows the photo column is always wider than the photo's own
-   ratio, so cover only trims top/bottom and never clips the sign. */
-@media (min-width:981px) and (min-aspect-ratio:3/2){
-  .shot-inner img{object-fit:cover;object-position:center 45%}
 }
 .js-anim .shot-inner img{transform:scale(1.12);transition:transform 1.9s var(--spring)}
 .js-anim .hero-shot.in .shot-inner img{transform:scale(1)}
