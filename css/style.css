@@ -325,3 +325,15 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   .lb-n{right:.5rem}
   .ticker::before,.ticker::after{width:56px}
 }
+
+/* ============ SOCIAL LINKS ============ */
+.soc{flex:none;display:inline-grid;place-items:center;width:38px;height:38px;border-radius:50%;color:var(--text-soft);border:1px solid transparent;transition:color .25s var(--snap),border-color .25s var(--snap)}
+.soc:hover{color:var(--accent-text);border-color:var(--hair)}
+.soc-group{display:flex;gap:4px;margin-right:2px}
+.soc-row{display:flex;align-items:center;gap:6px}
+.soc.soc-dark{border-color:var(--hair);color:var(--text)}
+.soc.soc-dark:hover{color:var(--accent-text);border-color:var(--accent-text)}
+.foot-soc{display:flex;align-items:center;gap:6px}
+.soc.soc-ft{width:34px;height:34px;color:var(--on-deep);border-color:rgba(255,255,255,.2)}
+.soc.soc-ft:hover{color:var(--gold-300);border-color:var(--gold-300)}
+@media (max-width:720px){.soc-group{display:none}}
